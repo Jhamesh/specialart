@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Generative Art Canvas</title>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: #222;
+      color: #fff;
+      font-family: sans-serif;
+      height: 100vh;
+      margin: 0;
+      justify-content: center;
+    }
+    canvas {
+      border: 2px solid #fff;
+      background: #111;
+      margin-bottom: 20px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 1.1em;
+      border: none;
+      border-radius: 5px;
+      background: #4caf50;
+      color: #fff;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    button:hover {
+      background: #388e3c;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="artCanvas" width="500" height="400"></canvas>
+  <button onclick="drawArt()">Generate Art</button>
+  <script>
+    function randomColor() {
+      return `hsl(${Math.random()*360}, 70%, 60%)`;
+    }
+
+    function drawArt() {
+      const canvas = document.getElementById('artCanvas');
+      const ctx = canvas.getContext('2d');
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      for (let i = 0; i < 30; i++) {
+        ctx.beginPath();
+        ctx.arc(
+          Math.random() * canvas.width,
+          Math.random() * canvas.height,
+          Math.random() * 80 + 10,
+          0,
+          Math.PI * 2
+        );
+        ctx.fillStyle = randomColor();
+        ctx.globalAlpha = 0.5 + Math.random() * 0.5;
+        ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+    }
+
+    // Draw once on load
+    drawArt();
+  </script>
+</body>
+</html>
