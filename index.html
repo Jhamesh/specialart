@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Special Generative Art</title>
+  <link href="https://fonts.googleapis.com/css?family=Pacifico&display=swap" rel="stylesheet">
+  <style>
+    body { margin: 0; background: #222; }
+    canvas { display: block; margin: 0 auto; background: #111; }
+    #message {
+      color: #fff;
+      text-align: center;
+      font-family: 'Arial', sans-serif;
+      font-size: 2em;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div id="message"></div>
+  <canvas id="art"></canvas>
+  <script>
+    const canvas = document.getElementById('art');
+    const ctx = canvas.getContext('2d');
+
+    // Resize canvas to fit window
+    function resizeCanvas() {
+      canvas.width = Math.min(window.innerWidth, 600);
+      canvas.height = Math.min(window.innerHeight, 400);
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    function drawHeart(x, y, size, color) {
+      ctx.save();
+      ctx.beginPath();
+      // Move to the bottom tip of the heart
+      ctx.moveTo(x, y + size * 0.4);
+      // Left half of heart
+      ctx.bezierCurveTo(
+        x, y, // control point 1
+        x - size * 0.5, y, // control point 2
+        x - size * 0.5, y + size * 0.3 // end point
+      );
+      ctx.bezierCurveTo(
+        x - size * 0.5, y + size * 0.7, // control point 1
+        x, y + size * 0.9, // control point 2
+        x, y + size // end point
+      );
+      // Right half of heart
+      ctx.bezierCurveTo(
+        x, y + size * 0.9, // control point 1
+        x + size * 0.5, y + size * 0.7, // control point 2
+        x + size * 0.5, y + size * 0.3 // end point
+      );
+      ctx.bezierCurveTo(
+        x + size * 0.5, y, // control point 1
+        x, y, // control point 2
+        x, y + size * 0.4 // end point (back to start)
+      );
+      ctx.closePath();
+      ctx.fillStyle = color;
+      ctx.globalAlpha = 0.7;
+      ctx.fill();
+      ctx.restore();
+    }
+
+    function randomColor() {
+      return `hsl(${Math.random() * 360}, 70%, 60%)`;
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let i = 0; i < 20; i++) {
+        const x = Math.random() * (canvas.width - 60);
+        const y = Math.random() * (canvas.height - 60);
+        const size = 30 + Math.random() * 30;
+        drawHeart(x, y, size, randomColor());
+      }
+      ctx.font = "bold 36px 'Pacifico', cursive";
+      ctx.globalAlpha = 1;
+      ctx.fillStyle = "#fff";
+      ctx.textAlign = "center";
+      ctx.fillText("LOVE   YOU   MITSI !", canvas.width / 2, canvas.height / 2);
+      ctx.font = "italic 24px 'Pacifico', cursive";
+      ctx.fillStyle = "#ffb6c1";
+      ctx.fillText("— From your best one", canvas.width / 2, canvas.height / 2 + 40);
+    }
+
+    setInterval(animate, 300); // Update every 300ms (adjust as needed)
+  </script>
+</body>
+</html>
